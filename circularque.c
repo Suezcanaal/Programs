@@ -1,54 +1,47 @@
-#include<stdlib.h>
 #include <stdio.h>
-#define MAX 3
+#include <stdlib.h>
+#define MAX 7
 
-struct circularque
-{
-    int data;
-};
-
-struct circularque Que[MAX];
+int items[MAX];
 int front = -1;
 int rear = -1;
 
-void insert(int value);
-void delete();
-void display();
-
-void insert(int value)
+void insert(int x)
 {
-    if ((rear == MAX - 1 && front == 0) || (rear + 1 == front))
+    if ((rear + 1) % MAX == front)
     {
         printf("Queue is full\n");
     }
-    if (front == -1)
+    else if (rear == -1 || front == -1)
     {
-        front = rear = 0;
+        rear = front = 0;
+        items[rear] = x;
     }
     else
     {
         rear = (rear + 1) % MAX;
+        items[rear] = x;
     }
-    Que[rear].data = value;
 }
 
-void delete()
+void deleteElement()
 {
-    if (rear == -1)
+    if (front == -1)
     {
-        printf("\nQueue is Empty\n");
-        return;
-    }
-    int value = Que[front].data;
-    if (rear == front)
-    {
-        rear = front = -1;
+        printf("Queue is empty\n");
     }
     else
     {
-        front = (front + 1) % MAX;
+        if (front == rear)
+        {
+            // Reset front and rear when the last element is dequeued
+            front = rear = -1;
+        }
+        else
+        {
+            front = (front + 1) % MAX;
+        }
     }
-    printf("Deleted value is %d\n", value);
 }
 
 void display()
@@ -59,23 +52,26 @@ void display()
     }
     else
     {
-        int i;
-        for (i = front; i != rear; i = (i + 1) % MAX)
+        int tempFront = front;
+        while (tempFront != rear)
         {
-            printf("Que[%d] = %d\n", i, Que[i].data);
+            printf(" %d \n", items[tempFront]);
+            tempFront = (tempFront + 1) % MAX;
         }
-        printf("Que[%d] = %d\n", i, Que[i].data);
+        printf(" %d \n", items[rear]);
     }
 }
 
 int main()
 {
     int ch;
+
     while (1)
     {
         printf("1. Insert\n2. Delete\n3. Display\n4. Exit\nEnter your choice: ");
         scanf("%d", &ch);
         int value;
+
         switch (ch)
         {
         case 1:
@@ -85,7 +81,7 @@ int main()
             break;
 
         case 2:
-            delete();
+            deleteElement();
             break;
 
         case 3:
