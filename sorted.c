@@ -8,7 +8,7 @@ struct Node
     struct Node *next;
 };
 
-struct Node *head = NULL, *newNode, *temp;
+struct Node *head = NULL, *newNode, *temp,*prev;
 
 void insert(char x[30])
 {
@@ -36,20 +36,35 @@ void insert(char x[30])
 
 void delete()
 {
-    char storage[30];
-    printf("Enter the Name to be deleted: ");
-    scanf("%s", storage);
-
-    while (temp != NULL && temp->next != NULL)
+    char value[50];
+    temp=head;
+    printf("Enter the name to be deleted = ");
+    scanf("%s",value);
+    while (temp != 0)
     {
-        if (strcmp(storage, temp->next->data) == 0)
+        if (strcmp(temp->data,value) == 0)
         {
-            struct Node *de = temp->next;
-            temp->next = temp->next->next;
-            free(de);
-            break;
+            if (temp == head)
+            {
+                head=head->next;
+                free(temp);
+                return;
+            }
+            else if (temp->next == 0)
+            {
+                prev->next=0;
+                free(temp);
+                return;
+            }
+            else
+            {
+            prev->next=temp->next;
+            free (temp);
+            return;
+            }
         }
-        temp = temp->next;
+        prev=temp;
+        temp=temp->next;
     }
 }
 
